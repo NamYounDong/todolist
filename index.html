@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Todo List</h1>
+    </header>
+
+    <section class="main_wrap">
+        
+        <form id="todoForm" class="submit_wrap">
+            <div class="tit_wrap middle_center">
+                <input type="text" placeholder="제목" name="tit"/>
+                <button type="button" id="submitBtn">등록</button>
+            </div>
+            <div class="cntn_wrap">
+                <textarea name="cntn" cols="5"></textarea>
+            </div>
+        </form>
+
+        <div class="todo_list_wrap">
+            <table id="todoListTable" class="todo_list_table">
+                <colgroup>
+                    <col width="30%">
+                    <col width="40%">
+                    <col width="/">
+                    <col width="20%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>등록일시</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </section>
+</body>
+</html>
