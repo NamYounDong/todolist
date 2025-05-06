@@ -66,7 +66,7 @@ var createTodoListTag = () => {
         todoListJson.forEach((todoJson, idx) => {
             toDoListTag += "<tr>";
             toDoListTag +=  "<td>"+todoJson.tit+"</td>";
-            toDoListTag +=  "<td>"+todoJson.cntn+"</td>";
+            toDoListTag +=  "<td>"+todoJson.cntn.replaceAll("\n", "<br/>")+"</td>";
             toDoListTag +=  '<td class="txt_center">'+todoJson.dte+'</td>';
             toDoListTag +=  '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
             toDoListTag += "</tr>";
