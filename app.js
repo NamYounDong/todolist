@@ -23,7 +23,7 @@ window.onload = function(){
     console.log(todoListJson);
 
     // todo list 태그 생성
-    createTodoListTag();
+    createTodoListTag(todoListJson);
     
     document.querySelector("#submitBtn").addEventListener("click", () => {
         regTodo();
@@ -36,8 +36,10 @@ function regTodo(){
     const formData = new FormData(todoForm);
 
     var todo = {
-        dte : new Date().format("yyyy-MM-dd")
+        dte : new Date().format("yyyy-MM-dd hh:mm:ss") // 등록일시 생성 및 날짜 포맷
     }
+
+    // 입력 정보 JSON 처리
     for (const [key, value] of formData.entries()){
         todo[key] = value;
     }
@@ -47,32 +49,33 @@ function regTodo(){
         todoListJson = []
     }
 
-    todoListJson.push(todo);
+    todoListJson.unshift(todo); // todolist 배열에 입력정보 추가
     localStorage.setItem('todoListJson',JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
 
-    createTodoListTag();
+    // todo list 태그 생성
+    createTodoListTag(todoListJson);
 
+    // 입력정보(form정보) 리셋
     todoForm.reset();
 }
 
-var createTodoListTag = () => {
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
-    
-    if(todoListJson == "" || todoListJson == undefined){
-        var noToDoListTag = '<tr><td class="txt_center" colspan="4">등록된 정보가 없습니다.</td></tr>';
+// todo list 태그 생성 함수
+var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 기능을 위해 todoListJson은 별도로 전달
+    if(todoListJson == "" || todoListJson == undefined){ // 스토리지에 데이터 없는 경우
+        var noToDoListTag = '<tr><td class="txt_center" colspan="4">ToDo List가 없습니다.</td></tr>';
         document.querySelector("#todoListTable tbody").innerHTML = noToDoListTag;
-    }else{
+    }else{ // 스토리지에 데이터가 있는 경우
         var toDoListTag = "";
         todoListJson.forEach((todoJson, idx) => {
             toDoListTag += "<tr>";
-            toDoListTag +=  "<td>"+todoJson.tit+"</td>";
-            toDoListTag +=  "<td>"+todoJson.cntn.replaceAll("\n", "<br/>")+"</td>";
-            toDoListTag +=  '<td class="txt_center">'+todoJson.dte+'</td>';
-            toDoListTag +=  '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
+            toDoListTag +=   "<td>"+todoJson.tit+"</td>";
+            toDoListTag +=   "<td>"+todoJson.cntn.replaceAll("\n", "<br/>")+"</td>";
+            toDoListTag +=   '<td class="txt_center">'+todoJson.dte+'</td>';
+            toDoListTag +=   '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
             toDoListTag += "</tr>";
         });
-        document.querySelector("#todoListTable tbody").innerHTML = ""; // 최초 리셋
-        document.querySelector("#todoListTable tbody").innerHTML = toDoListTag; // Json 리스트 등록
+        document.querySelector("#todoListTable tbody").innerHTML = ""; // 테이블 태그 리셋
+        document.querySelector("#todoListTable tbody").innerHTML = toDoListTag; // Json 리스트 태그로 노출
     }
 }
 
@@ -81,5 +84,6 @@ var removeTodo = function(tag, idx){
     var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
     todoListJson.splice(idx, 1);
     localStorage.setItem('todoListJson', JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
-    createTodoListTag();
+
+    createTodoListTag(todoListJson);
 }
