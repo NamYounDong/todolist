@@ -26,6 +26,14 @@ window.onload = function(){
     createTodoListTag(todoListJson);
     
     document.querySelector("#submitBtn").addEventListener("click", () => {
+        var tit = document.querySelector("[name=tit]").value;
+        console.log("tit : "+tit);
+
+        if(tit.trim() == ""){ // 제목 미입력 체크
+            alert("제목을 입력해주세요.");
+            return;
+        }
+
         regTodo();
     });
 }
@@ -82,7 +90,7 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
 // todo list 라인 제거
 var removeTodo = function(tag, idx){
     var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
-    todoListJson.splice(idx, 1);
+    todoListJson.splice(idx, 1); // 해당 index todolist 제거
     localStorage.setItem('todoListJson', JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
 
     createTodoListTag(todoListJson);
