@@ -22,6 +22,9 @@ window.onload = function(){
     console.log("====== Todo List JSON ======");
     console.log(todoListJson);
 
+    // 입력정보(form정보) 리셋
+    resetTodoForm();
+
     // todo list 태그 생성
     createTodoListTag(todoListJson);
     
@@ -44,7 +47,7 @@ function regTodo(){
     const formData = new FormData(todoForm);
 
     var todo = {
-        dte : new Date().format("yyyy-MM-dd hh:mm:ss") // 등록일시 생성 및 날짜 포맷
+        regDte : new Date().format("yyyy-MM-dd hh:mm") // 등록일시 생성 및 날짜 포맷
     }
 
     // 입력 정보 JSON 처리
@@ -64,7 +67,7 @@ function regTodo(){
     createTodoListTag(todoListJson);
 
     // 입력정보(form정보) 리셋
-    todoForm.reset();
+    resetTodoForm();
 }
 
 // todo list 태그 생성 함수
@@ -76,9 +79,9 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
         var toDoListTag = "";
         todoListJson.forEach((todoJson, idx) => {
             toDoListTag += "<tr>";
-            toDoListTag +=   "<td>"+todoJson.tit+"</td>";
-            toDoListTag +=   "<td>"+todoJson.cntn.replaceAll("\n", "<br/>")+"</td>";
-            toDoListTag +=   '<td class="txt_center">'+todoJson.dte+'</td>';
+            toDoListTag +=   '<td>'+todoJson.tit+'</td>';
+            toDoListTag +=   '<td><div class="cntn_td_wrap"><div class="todo_cntn">'+todoJson.cntn.replaceAll("\n", "<br/>")+'</div><div class="reg_dte">등록일시:'+todoJson.regDte+'</div></div></td>';
+            toDoListTag +=   '<td class="txt_center">'+todoJson.fDte+'</td>';
             toDoListTag +=   '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
             toDoListTag += "</tr>";
         });
@@ -94,4 +97,11 @@ var removeTodo = function(tag, idx){
     localStorage.setItem('todoListJson', JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
 
     createTodoListTag(todoListJson);
+}
+
+// todo 입력 폼 리셋
+var resetTodoForm = () => {
+    const todoForm = document.querySelector("#todoForm")
+    todoForm.reset();
+    document.querySelector('[name=fDte]').value = new Date().format('yyyy-MM-dd');
 }
