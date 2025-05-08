@@ -1,8 +1,18 @@
+
+
 * {
     margin:0;
     padding:0;
     box-sizing: border-box;
     font-size: 18px;
+    
+    pointer-events: none;
+
+    -ms-user-select: none;    
+    -moz-user-select: -moz-none;   
+    -khtml-user-select: none;   
+    -webkit-user-select: none;   
+    user-select: none;
 }
 
 input[type=text], input[type=date] {
@@ -155,4 +165,9 @@ button.modify {
 
 .todo_list_table tbody tr.selected {
     background: lightblue;
+}
+button.disabled {
+    background: #ddd;
+    color:gray;
+    opacity:0.4;
 }

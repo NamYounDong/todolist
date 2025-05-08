@@ -29,30 +29,32 @@ window.onload = function(){
     createTodoListTag(todoListJson);
     
     document.querySelector("#submitBtn").addEventListener("click", () => {
-        var tit = document.querySelector("[name=tit]").value;
-        console.log("tit : "+tit);
-
-        if(tit.trim() == ""){ // 제목 미입력 체크
-            alert("제목을 입력해주세요.");
+        if(chkFormData()){ // 데이터 등록 유효성 검사
             return;
         }
-
         regTodo(); // 등록 / 수정 함수
     });
 
 
     document.querySelector("#modifyBtn").addEventListener("click", () => {
-        var tit = document.querySelector("[name=tit]").value;
-        console.log("tit : "+tit);
-
-        if(tit.trim() == ""){ // 제목 미입력 체크
-            alert("제목을 입력해주세요.");
+        if(chkFormData()){ // 데이터 등록 유효성 검사
             return;
         }
-
         regTodo(); // 등록 / 수정 함수
     });
 }
+
+// 데이터 등록 유효성 검사
+function chkFormData(){
+    var chk = true;
+    var tit = document.querySelector("[name=tit]").value;
+    if(tit.trim() == ""){ // 제목 미입력 체크
+        alert("제목을 입력해주세요.");
+    }
+
+    return chk;
+}
+
 
 // 등록 / 수정 함수
 function regTodo(){
@@ -99,25 +101,27 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
     }else{ // 스토리지에 데이터가 있는 경우
         var toDoListTag = "";
         todoListJson.forEach((todoJson, idx) => {
-            toDoListTag += "<tr>";
-            toDoListTag +=   '<td>'+todoJson.tit+'</td>';
-            toDoListTag +=   '<td>';
-            toDoListTag +=      '<div class="cntn_td_wrap">';
-            toDoListTag +=          '<div class="todo_cntn">'+todoJson.cntn.replaceAll("\n", "<br/>")+'</div>';
-            toDoListTag +=          '<div class="reg_dte">등록일시:'+todoJson.regDte+'</div>';
-            toDoListTag +=      '</div>';
-            toDoListTag +=   '</td>';
-            toDoListTag +=   '<td class="txt_center"><p>'+todoJson.sDte+"</p><p>~</p><p>"+todoJson.fDte+'</p></td>';
-            toDoListTag +=   '<td class="txt_center">';
-            toDoListTag +=      '<div>';
-            toDoListTag +=          '<button class="modify" onclick="modifyTodoFormSettting(this, '+idx+')"/>수정</button>';
-            toDoListTag +=        '<button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button>';
-            toDoListTag +=      '</div>';
-            toDoListTag +=   '</td>';
-            toDoListTag += "</tr>";
+            toDoListTag += `<tr>`;
+            toDoListTag +=   `<td>${todoJson.tit}</td>`;
+            toDoListTag +=   `<td>`;
+            toDoListTag +=      `<div class="cntn_td_wrap">`;
+            toDoListTag +=          `<div class="todo_cntn">${todoJson.cntn.replaceAll("\n", "<br/>")}</div>`;
+            toDoListTag +=          `<div class="reg_dte">등록일시:${todoJson.regDte}</div>`;
+            toDoListTag +=      `</div>`;
+            toDoListTag +=   `</td>`;
+            toDoListTag +=   `<td class="txt_center">`
+            toDoListTag +=      `<p>${todoJson.sDte}</p><p>~</p><p>${todoJson.fDte}</p>`
+            toDoListTag +=   `</td>`;
+            toDoListTag +=   `<td class="txt_center">`;
+            toDoListTag +=      `<div>`;
+            toDoListTag +=          `<button class="modify" onclick="modifyTodoFormSettting(this, '+idx+')"/>수정</button>`;
+            toDoListTag +=          `<button class="del" onclick="removeTodo(this, ${idx})"/>삭제</button>`;
+            toDoListTag +=      `</div>`;
+            toDoListTag +=   `</td>`;
+            toDoListTag += `</tr>`;
         });
-        document.querySelector("#todoListTable tbody").innerHTML = ""; // 테이블 태그 리셋
-        document.querySelector("#todoListTable tbody").innerHTML = toDoListTag; // Json 리스트 태그로 노출
+        document.querySelector("#todoListTable tbody").insertAdjacentHTML('beforeend', ''); // 테이블 태그 리셋
+        document.querySelector("#todoListTable tbody").insertAdjacentHTML('beforeend', toDoListTag); // Json 리스트 태그로 노출
     }
 }
 
@@ -128,6 +132,7 @@ var modifyTodoFormSettting = function(tag, idx){
     tag.parentNode.parentNode.parentNode.classList.add('selected'); // 수정 대상 선택 처리
     // todoList 테이블 모든 버튼 비활성화 처리
     document.querySelectorAll('#todoListTable button').forEach(element => {
+        element.classList.add('disabled');
         element.disabled = true;
     });
 
@@ -174,6 +179,7 @@ var resetTodoForm = () => {
 
     // todoList 테이블 모든 버튼 활성화 처리
     document.querySelectorAll('#todoListTable button').forEach(element => {
+        element.classList.remove('disabled');
         element.disabled = false;
     });
 
