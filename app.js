@@ -80,8 +80,13 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
         todoListJson.forEach((todoJson, idx) => {
             toDoListTag += "<tr>";
             toDoListTag +=   '<td>'+todoJson.tit+'</td>';
-            toDoListTag +=   '<td><div class="cntn_td_wrap"><div class="todo_cntn">'+todoJson.cntn.replaceAll("\n", "<br/>")+'</div><div class="reg_dte">등록일시:'+todoJson.regDte+'</div></div></td>';
-            toDoListTag +=   '<td class="txt_center">'+todoJson.fDte+'</td>';
+            toDoListTag +=   '<td>';
+            toDoListTag +=      '<div class="cntn_td_wrap">';
+            toDoListTag +=          '<div class="todo_cntn">'+todoJson.cntn.replaceAll("\n", "<br/>")+'</div>';
+            toDoListTag +=          '<div class="reg_dte">등록일시:'+todoJson.regDte+'</div>';
+            toDoListTag +=      '</div>';
+            toDoListTag +=   '</td>';
+            toDoListTag +=   '<td class="txt_center"><p>'+todoJson.sDte+"</p><p>~</p><p>"+todoJson.fDte+'</p></td>';
             toDoListTag +=   '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
             toDoListTag += "</tr>";
         });
@@ -103,5 +108,7 @@ var removeTodo = function(tag, idx){
 var resetTodoForm = () => {
     const todoForm = document.querySelector("#todoForm")
     todoForm.reset();
+    // 일정 input 초기화
+    document.querySelector('[name=sDte]').value = new Date().format('yyyy-MM-dd');
     document.querySelector('[name=fDte]').value = new Date().format('yyyy-MM-dd');
 }
