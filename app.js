@@ -37,11 +37,24 @@ window.onload = function(){
             return;
         }
 
-        regTodo();
+        regTodo(); // 등록 / 수정 함수
+    });
+
+
+    document.querySelector("#modifyBtn").addEventListener("click", () => {
+        var tit = document.querySelector("[name=tit]").value;
+        console.log("tit : "+tit);
+
+        if(tit.trim() == ""){ // 제목 미입력 체크
+            alert("제목을 입력해주세요.");
+            return;
+        }
+
+        regTodo(); // 등록 / 수정 함수
     });
 }
 
-
+// 등록 / 수정 함수
 function regTodo(){
     const todoForm = document.querySelector("#todoForm")
     const formData = new FormData(todoForm);
@@ -55,12 +68,20 @@ function regTodo(){
         todo[key] = value;
     }
 
+    var trgtIdx = document.querySelector('#modifyIdx').value;
     var todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
-    if(todoListJson == "" || todoListJson == undefined){
-        todoListJson = []
+    
+    if(trgtIdx == "-1"){ // 등록
+        if(todoListJson == "" || todoListJson == undefined){
+            todoListJson = []
+        }
+    
+        todoListJson.unshift(todo); // todolist 배열에 입력정보 추가
+    }else{ // 수정
+        var trgtIdx = document.querySelector('#modifyIdx').value;
+        todoListJson[trgtIdx] = todo; // 대상 todo 정보 교체
     }
 
-    todoListJson.unshift(todo); // todolist 배열에 입력정보 추가
     localStorage.setItem('todoListJson',JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
 
     // todo list 태그 생성
@@ -87,13 +108,46 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
             toDoListTag +=      '</div>';
             toDoListTag +=   '</td>';
             toDoListTag +=   '<td class="txt_center"><p>'+todoJson.sDte+"</p><p>~</p><p>"+todoJson.fDte+'</p></td>';
-            toDoListTag +=   '<td class="txt_center"><button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button></td>';
+            toDoListTag +=   '<td class="txt_center">';
+            toDoListTag +=      '<div>';
+            toDoListTag +=          '<button class="modify" onclick="modifyTodoFormSettting(this, '+idx+')"/>수정</button>';
+            toDoListTag +=        '<button class="del" onclick="removeTodo(this, '+idx+')"/>삭제</button>';
+            toDoListTag +=      '</div>';
+            toDoListTag +=   '</td>';
             toDoListTag += "</tr>";
         });
         document.querySelector("#todoListTable tbody").innerHTML = ""; // 테이블 태그 리셋
         document.querySelector("#todoListTable tbody").innerHTML = toDoListTag; // Json 리스트 태그로 노출
     }
 }
+
+// todo list 라인 수정
+var modifyTodoFormSettting = function(tag, idx){
+    var todoListJson = JSON.parse(localStorage.getItem('todoListJson'))[idx]; // todoList JSON 대상 정보 조회
+
+    tag.parentNode.parentNode.parentNode.classList.add('selected'); // 수정 대상 선택 처리
+    // todoList 테이블 모든 버튼 비활성화 처리
+    document.querySelectorAll('#todoListTable button').forEach(element => {
+        element.disabled = true;
+    });
+
+    document.querySelector('#modifyIdx').value = idx; // 수정 대상 index값 저장
+
+    document.querySelector('#submitBtn').style.display = 'none'; // 수정 버튼 노출
+    document.querySelectorAll('.modify_btns').forEach(element => {
+        element.style.display = 'block';
+    }); // 수정관련 버튼 노출
+
+    // form 데이터 입히기
+    // form에 데이터가 추가되어도 추가 수정이 필요 없도록 유동적으로 key값이 적용되도록 대응
+    for (const key of Object.keys(todoListJson)){
+        var formTrgt = document.querySelector('#todoForm [name='+key+']')
+        if(!(formTrgt == undefined || formTrgt == null)){
+            formTrgt.value = todoListJson[key]; 
+        }
+    }
+}
+
 
 // todo list 라인 제거
 var removeTodo = function(tag, idx){
@@ -111,4 +165,24 @@ var resetTodoForm = () => {
     // 일정 input 초기화
     document.querySelector('[name=sDte]').value = new Date().format('yyyy-MM-dd');
     document.querySelector('[name=fDte]').value = new Date().format('yyyy-MM-dd');
+
+    document.querySelector('#submitBtn').style.display = 'block'; // 등록 버튼 노출
+    // 수정관련 버튼 숨김
+    document.querySelectorAll('.modify_btns').forEach(element => {
+        element.style.display = 'none';
+    }); 
+
+    // todoList 테이블 모든 버튼 활성화 처리
+    document.querySelectorAll('#todoListTable button').forEach(element => {
+        element.disabled = false;
+    });
+
+    // 테이블 선택 영역 클래스 제거
+    document.querySelectorAll('#todoListTable tbody tr').forEach(element => {
+        element.classList.remove('selected');
+    });
+
+    document.querySelector('#modifyIdx').value = "-1"; // 수정 대상 제거
+    
 }
+

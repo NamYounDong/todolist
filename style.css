@@ -28,6 +28,8 @@ button {
     color:#fff;
     cursor: pointer;
     word-break: keep-all;
+    font-size:0.7rem;
+    height: fit-content;
 }
 
 body {
@@ -60,6 +62,10 @@ th, td{
 }
 table thead{
     position: sticky;
+    background: #222;
+    color:#fff;
+    top: 0;
+    z-index: 1;
 }
 
 .txt_center{
@@ -74,6 +80,10 @@ table thead{
 
 button.del {
     background: #790000;
+}
+button.modify {
+    background: #6fca67;
+    color:#222;
 }
 
 .submit_wrap{
@@ -128,4 +138,21 @@ button.del {
 
 .cntn_wrap input[type=date] {
     width : 100%;
+}
+
+
+.todo_list_table tbody tr td:last-child div {
+    display:flex;
+    align-items: center;
+    height:100%;
+    gap:5px;
+}
+
+
+.modify_btns {
+    display:none;
+}
+
+.todo_list_table tbody tr.selected {
+    background: lightblue;
 }
