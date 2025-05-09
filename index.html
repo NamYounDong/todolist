@@ -13,6 +13,14 @@
 <body>
     <header>
         <h1>Todo List</h1>
+        <div class="todo_form_btns">
+            <button id="openTodoFormOpenBtn" class="open_todo_form_btn" onclick="openSubmitForm();">
+                <i class="ri-add-fill"></i>
+            </button>
+            <button id="openTodoFormCloseBtn" class="open_todo_form_btn" onclick="closeSubmitForm();">
+                <i class="ri-subtract-fill"></i>
+            </buton>
+        </div>
     </header>
 
     <section class="main_wrap">
@@ -29,7 +37,7 @@
                 <button type="button" id="submitBtn">등록</button>
 
                 <button type="button" id="modifyBtn" class="modify_btns">수정</button>
-                <button type="button" id="modifyCancelBtn" class="modify_btns del" onclick="resetTodoForm()">취소</button>
+                <button type="button" id="modifyCancelBtn" class="modify_btns del" onclick="closeSubmitForm(); resetTodoForm()">취소</button>
             </div>
             <div class="cntn_wrap">
                 <textarea name="cntn" cols="5"></textarea>

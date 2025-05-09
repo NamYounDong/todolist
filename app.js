@@ -15,12 +15,7 @@
 // 6. 완료 버튼 클릭 시 데이터 DOM 이동 기능 실행
 
 window.onload = function(){
-    console.log("====== Todo List Start ======");
-    
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
-    
-    console.log("====== Todo List JSON ======");
-    console.log(todoListJson);
+    let todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
 
     // 입력정보(form정보) 리셋
     resetTodoForm();
@@ -48,8 +43,8 @@ function regeTodoProc(){
 
 // 데이터 등록 유효성 검사
 function chkFormData(){
-    var chk = true;
-    var tit = document.querySelector("[name=tit]");
+    let chk = true;
+    let tit = document.querySelector("[name=tit]");
     if(tit.value.trim() == ""){ // 제목 미입력 체크
         
         tit.value = "";
@@ -67,10 +62,10 @@ function chkFormData(){
 
 // 등록 / 수정 함수
 function regTodo(){
-    const todoForm = document.querySelector("#todoForm")
-    const formData = new FormData(todoForm);
+    let todoForm = document.querySelector("#todoForm")
+    let formData = new FormData(todoForm);
 
-    var todo = {
+    let todo = {
         regDte : new Date().format("yyyy-MM-dd hh:mm") // 등록일시 생성 및 날짜 포맷
     }
 
@@ -79,8 +74,8 @@ function regTodo(){
         todo[key] = value;
     }
 
-    var trgtIdx = document.querySelector('#modifyIdx').value;
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
+    let trgtIdx = document.querySelector('#modifyIdx').value;
+    let todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
 
     if(trgtIdx == "-1"){ // 등록
         if(todoListJson == "" || todoListJson == undefined){
@@ -89,7 +84,6 @@ function regTodo(){
     
         todoListJson.unshift(todo); // todolist 배열에 입력정보 추가
     }else{ // 수정
-        var trgtIdx = document.querySelector('#modifyIdx').value;
         todoListJson[trgtIdx] = todo; // 대상 todo 정보 교체
     }
 
@@ -103,12 +97,12 @@ function regTodo(){
 }
 
 // todo list 태그 생성 함수
-var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 기능을 위해 todoListJson은 별도로 전달
+const createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 기능을 위해 todoListJson은 별도로 전달
     if(todoListJson == "" || todoListJson == undefined){ // 스토리지에 데이터 없는 경우
-        var noToDoListTag = '<tr><td class="txt_center" colspan="4">ToDo List가 없습니다.</td></tr>';
+        let noToDoListTag = '<tr><td class="txt_center" colspan="4">ToDo List가 없습니다.</td></tr>';
         document.querySelector("#todoListTable tbody").innerHTML = noToDoListTag;
     }else{ // 스토리지에 데이터가 있는 경우
-        var toDoListTag = "";
+        let toDoListTag = "";
         todoListJson.forEach((todoJson, idx) => {
             toDoListTag += `<tr>`;
             toDoListTag +=   `<td>${todoJson.tit}</td>`;
@@ -134,9 +128,31 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
     }
 }
 
+
+const openSubmitForm = () => {
+    const todoForm = document.querySelector('#todoForm');
+    if(!todoForm.classList.contains('active')){
+        todoForm.classList.add('active');
+    }
+    document.querySelector('#openTodoFormOpenBtn').style.display = 'none';
+    document.querySelector('#openTodoFormCloseBtn').style.display = 'block';
+
+}
+
+const closeSubmitForm = () => {
+    const todoForm = document.querySelector('#todoForm');
+    if(todoForm.classList.contains('active')){
+        todoForm.classList.remove('active');
+    }
+    document.querySelector('#openTodoFormOpenBtn').style.display = 'block';
+    document.querySelector('#openTodoFormCloseBtn').style.display = 'none';
+}
+
 // todo list 라인 수정
-var modifyTodoFormSettting = function(tag, idx){
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson'))[idx]; // todoList JSON 대상 정보 조회
+const modifyTodoFormSettting = function(tag, idx){
+    openSubmitForm();
+
+    let todoListJson = JSON.parse(localStorage.getItem('todoListJson'))[idx]; // todoList JSON 대상 정보 조회
 
     tag.parentNode.parentNode.parentNode.classList.add('selected'); // 수정 대상 선택 처리
     // todoList 테이블 모든 버튼 비활성화 처리
@@ -144,6 +160,12 @@ var modifyTodoFormSettting = function(tag, idx){
         element.classList.add('disabled');
         element.disabled = true;
     });
+
+    document.querySelector('#openTodoFormOpenBtn').disabled = true;
+    document.querySelector('#openTodoFormCloseBtn').disabled = true;
+    document.querySelector('#openTodoFormOpenBtn').classList.add('disabled');
+    document.querySelector('#openTodoFormCloseBtn').classList.add('disabled');
+
 
     document.querySelector('#modifyIdx').value = idx; // 수정 대상 index값 저장
 
@@ -155,7 +177,7 @@ var modifyTodoFormSettting = function(tag, idx){
     // form 데이터 입히기
     // form에 데이터가 추가되어도 추가 수정이 필요 없도록 유동적으로 key값이 적용되도록 대응
     for (const key of Object.keys(todoListJson)){
-        var formTrgt = document.querySelector('#todoForm [name='+key+']')
+        let formTrgt = document.querySelector('#todoForm [name='+key+']')
         if(!(formTrgt == undefined || formTrgt == null)){
             formTrgt.value = todoListJson[key]; 
         }
@@ -164,8 +186,8 @@ var modifyTodoFormSettting = function(tag, idx){
 
 
 // todo list 라인 제거
-var removeTodo = function(tag, idx){
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
+const removeTodo = function(tag, idx){
+    let todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
     todoListJson.splice(idx, 1); // 해당 index todolist 제거
     localStorage.setItem('todoListJson', JSON.stringify(todoListJson)) // 로컬스토리지에 json string 저장
 
@@ -173,7 +195,7 @@ var removeTodo = function(tag, idx){
 }
 
 // todo 입력 폼 리셋
-var resetTodoForm = () => {
+const resetTodoForm = () => {
     const todoForm = document.querySelector("#todoForm")
     todoForm.reset();
     // 일정 input 초기화
@@ -192,6 +214,12 @@ var resetTodoForm = () => {
         element.disabled = false;
     });
 
+    document.querySelector('#openTodoFormOpenBtn').disabled = false;
+    document.querySelector('#openTodoFormCloseBtn').disabled = false;
+    document.querySelector('#openTodoFormOpenBtn').classList.remove('disabled');
+    document.querySelector('#openTodoFormCloseBtn').classList.remove('disabled');
+
+
     // 테이블 선택 영역 클래스 제거
     document.querySelectorAll('#todoListTable tbody tr').forEach(element => {
         element.classList.remove('selected');
@@ -200,10 +228,10 @@ var resetTodoForm = () => {
     document.querySelector('#modifyIdx').value = "-1"; // 수정 대상 제거
 }
 
-var searchTodoList = function(){
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
+const searchTodoList = function(){
+    let todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
     
-    var searchText = document.querySelector("#searchTxt");
+    let searchText = document.querySelector("#searchTxt");
     if(searchTxt.value.trim() == ""){ // 검색어 미입력
         searchText.value = "";
         searchTxt.classList.add('no_txt');
@@ -215,7 +243,7 @@ var searchTodoList = function(){
         return;
     }
 
-    var searchTodoList = [];
+    let searchTodoList = [];
 
     todoListJson.forEach((todoJson, idx) => {
         // 공백 무시 문자열 비교 정규식

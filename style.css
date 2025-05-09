@@ -62,9 +62,11 @@ body {
 }
 
 header {
-    padding:10px;
+    position:relative;
+    margin:10px auto;
     width:100%;
     height:50px;
+    max-width: 1280px;
 }
 
 header h1 {
@@ -112,7 +114,18 @@ button.modify {
 
 .submit_wrap{
     margin:20px 0;
+    background: #ddd;
+    border-radius: 5px;
+    max-height: 0;
+    overflow: hidden;
+    transition:all 0.3s ease;
 }
+
+.submit_wrap.active{
+    padding:5px;
+    max-height: 500px;
+}
+
 .tit_wrap {
     margin-bottom:5px;
     gap:10px;
@@ -187,7 +200,28 @@ button.disabled {
     opacity:0.4;
 }
 
-
 span.search_trgt_txt {
     background: yellow;
+}
+
+
+.todo_form_btns{
+    position:absolute;
+    right: 5%;
+    top:0;
+}
+
+.todo_form_btns > button {
+    border: 2px solid #111;
+    background: transparent;
+    color:#222;
+    padding:5px;
+    border-radius: 50%;
+}
+.todo_form_btns > button:last-child{
+    display: none;
+}
+.todo_form_btns > button > i {
+    font-size:1.0rem;
+    font-weight: bold;
 }
