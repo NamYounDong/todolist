@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/calendar.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" integrity="sha512-XcIsjKMcuVe0Ucj/xgIXQnytNwBttJbNjltBV18IOnru2lDPe9KRRyvCXw6Y5H415vbBLRm8+q6fmLUU7DfO6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="app.js"></script>
-    <script src="cmmn.js"></script>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/cmmn.js"></script>
+    <script src="/js/calendar.js"></script>
 </head>
 <body>
     <header>
@@ -75,5 +79,45 @@
         </div>
 
     </section>
+
+
+    <section class="main_wrap">
+        <div class="date_wrap">
+            <div id="yearWrap" class="year_wrap"></div>
+
+            <div id="monthWrap" class="month_wrap">
+                <ul id="monthWrap" class="month_wrap">
+                    <li>01</li>
+                    <li>02</li>
+                    <li>03</li>
+                    <li>04</li>
+                    <li>05</li>
+                    <li>06</li>
+                    <li>07</li>
+                    <li>08</li>
+                    <li>09</li>
+                    <li>10</li>
+                    <li>11</li>
+                    <li>12</li>
+                </ul>
+            </div>
+
+        </div>
+        <table class="calendar_table">
+            <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
 </body>
 </html>
