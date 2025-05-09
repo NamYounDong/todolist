@@ -1,3 +1,69 @@
 .date_wrap {
+    position:relative;
+    width:100%;
+    height:30px;
+    display: flex;
+    justify-content: center;
+    gap:20px;
+    align-items: center;
+    margin: 10px 0;
+}
 
+.dte_sub_wrap input[type=number], .dte_sub_wrap li {
+    font-weight: bold;
+    font-size:26px;
+}
+
+.dte_sub_wrap input[type=number] {
+    text-align: center;
+    padding:0;
+    border: none;
+    width:84px;
+}
+
+
+.month_wrap{
+    position:relative;
+    width:30px;
+    height:100%;
+    overflow: hidden;
+}
+
+.month_list_wrap {
+    display: flex;
+    gap:13px;
+    overflow: hidden;
+    position:absolute;
+    transition:all 0.3s ease;
+    top: -6px;
+    left:0;
+}
+.month_list_wrap li {
+    width:30px;
+}
+
+.date_wrap a i {
+    font-size:26px;
+    color:#222;
+}
+
+/* 테이블 태그 말줄임 기능 활용을 위한 조치 */
+.calendar_table{
+    table-layout: fixed;
+}
+
+.calendar_table td {
+    padding:5px;
+}
+
+.calendar_table .cell_wrap{
+    width:100%;
+    height: 100%;
+}
+
+.todo_wrap {
+    background: yellow;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

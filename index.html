@@ -83,11 +83,16 @@
 
     <section class="main_wrap">
         <div class="date_wrap">
-            <div id="yearWrap" class="year_wrap"></div>
-
+            <div id="yearWrap" class="year_wrap dte_sub_wrap">
+                <input type="number" id="year" class="year" value="2025" onchange="moveMonth(0);">
+            </div>
+            
+            <a class="dte_sub_wrap" href="javascript:moveMonth(-1);">
+                <i class="ri-arrow-left-wide-line"></i>
+            </a>
             <div id="monthWrap" class="month_wrap">
-                <ul id="monthWrap" class="month_wrap">
-                    <li>01</li>
+                <ul id="monthListWrap" class="month_list_wrap dte_sub_wrap">
+                    <li class="selected">01</li>
                     <li>02</li>
                     <li>03</li>
                     <li>04</li>
@@ -101,9 +106,20 @@
                     <li>12</li>
                 </ul>
             </div>
-
+            <a class="dte_sub_wrap" href="javascript:moveMonth(1);">
+                <i class="ri-arrow-right-wide-line"></i>
+            </a>
         </div>
-        <table class="calendar_table">
+        <table id="calendarTable" class="calendar_table">
+            <colgroup>
+                <col width="14.28%">
+                <col width="14.28%">
+                <col width="14.28%">
+                <col width="14.28%">
+                <col width="14.28%">
+                <col width="14.28%">
+                <col width="14.28%">
+            </colgroup>
             <thead>
                 <tr>
                     <th>일</th>

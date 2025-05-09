@@ -5,7 +5,7 @@
     padding:0;
     box-sizing: border-box;
     font-size: 14px;
-    pointer-events: none;
+    /* pointer-events: none; */
     -ms-user-select: none;    
     -moz-user-select: -moz-none;   
     -khtml-user-select: none;   
@@ -15,6 +15,12 @@
 
 ol, ul {
     list-style: none;
+}
+
+
+a {
+    text-decoration: none;
+    cursor: pointer;
 }
 
 
@@ -67,6 +73,17 @@ body {
     height:100vh;
 }
 
+
+
+.op05 {
+    opacity: 0.5;
+}
+
+.txt-bold {
+    font-weight: bold;
+}
+
+
 header {
     position:relative;
     margin:auto;
@@ -85,13 +102,12 @@ table{
     width :100%;
 }
 table, th, td {
-    border: 2px solid #ddd;
-    border-collapse: collapse;
-}
-th, td{
     position:relative;
     padding:10px;
     height:1px; /* 자식 태그 height 100%를 주기 위한 꼼수 */
+    word-break: break-all;
+    border: 2px solid #ddd;
+    border-collapse: collapse;
 }
 table thead{
     position: sticky;

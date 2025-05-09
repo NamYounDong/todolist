@@ -22,7 +22,7 @@ window.onload = function(){
 
     // todo list 태그 생성
     createTodoListTag(todoListJson);
-    
+
     document.querySelector("#submitBtn").addEventListener("click", () => {
         regeTodoProc();
     });
@@ -126,6 +126,9 @@ const createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 
         document.querySelector("#todoListTable tbody").replaceChildren(); // 테이블 태그 리셋
         document.querySelector("#todoListTable tbody").insertAdjacentHTML('beforeend', toDoListTag); // Json 리스트 태그로 노출
     }
+
+    // calendar 현재 날짜 지정 및 생성
+    selectCalendarDte();
 }
 
 
