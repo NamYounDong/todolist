@@ -4,15 +4,23 @@
     margin:0;
     padding:0;
     box-sizing: border-box;
-    font-size: 18px;
-    
-    pointer-events: none;
-
+    font-size: 14px;
+    /* pointer-events: none;
     -ms-user-select: none;    
     -moz-user-select: -moz-none;   
     -khtml-user-select: none;   
     -webkit-user-select: none;   
-    user-select: none;
+    user-select: none; */
+}
+
+label {
+    white-space: nowrap;
+    font-size:1.2rem;
+    font-weight: bold;
+}
+
+input {
+    outline: none;
 }
 
 input[type=text], input[type=date] {
@@ -21,6 +29,12 @@ input[type=text], input[type=date] {
     padding:10px 5px;
     border: 1px solid #211f9c;
 }
+
+input[type=text].no_txt::placeholder{
+    color:#790000;
+    font-weight:bold;
+}
+
 
 textarea {
     resize: none;
@@ -104,10 +118,11 @@ button.modify {
     gap:10px;
 }
 .tit_wrap input[type=text]{
-    width:80%;
+    width:100%;
 }
 .tit_wrap button{
     width:20%;
+    max-width:70px;
 }
 
 .main_wrap {
@@ -170,4 +185,9 @@ button.disabled {
     background: #ddd;
     color:gray;
     opacity:0.4;
+}
+
+
+span.search_trgt_txt {
+    background: yellow;
 }

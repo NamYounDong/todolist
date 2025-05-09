@@ -29,27 +29,37 @@ window.onload = function(){
     createTodoListTag(todoListJson);
     
     document.querySelector("#submitBtn").addEventListener("click", () => {
-        if(chkFormData()){ // 데이터 등록 유효성 검사
-            return;
-        }
-        regTodo(); // 등록 / 수정 함수
+        regeTodoProc();
     });
 
 
     document.querySelector("#modifyBtn").addEventListener("click", () => {
-        if(chkFormData()){ // 데이터 등록 유효성 검사
-            return;
-        }
-        regTodo(); // 등록 / 수정 함수
+        regeTodoProc();
     });
 }
+
+// Todo List 동작
+function regeTodoProc(){
+    if(!chkFormData()){ // 데이터 등록 유효성 검사
+        return;
+    }
+    regTodo(); // 등록 / 수정 함수
+}
+
 
 // 데이터 등록 유효성 검사
 function chkFormData(){
     var chk = true;
-    var tit = document.querySelector("[name=tit]").value;
-    if(tit.trim() == ""){ // 제목 미입력 체크
-        alert("제목을 입력해주세요.");
+    var tit = document.querySelector("[name=tit]");
+    if(tit.value.trim() == ""){ // 제목 미입력 체크
+        
+        tit.value = "";
+        tit.classList.add('no_txt');
+        setTimeout(() => {
+            tit.classList.remove('no_txt');
+        }, 5000);
+
+        chk = false;
     }
 
     return chk;
@@ -72,7 +82,7 @@ function regTodo(){
 
     var trgtIdx = document.querySelector('#modifyIdx').value;
     var todoListJson = JSON.parse(localStorage.getItem('todoListJson'));
-    
+
     if(trgtIdx == "-1"){ // 등록
         if(todoListJson == "" || todoListJson == undefined){
             todoListJson = []
@@ -110,17 +120,17 @@ var createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 �
             toDoListTag +=      `</div>`;
             toDoListTag +=   `</td>`;
             toDoListTag +=   `<td class="txt_center">`
-            toDoListTag +=      `<p>${todoJson.sDte}</p><p>~</p><p>${todoJson.fDte}</p>`
+            toDoListTag +=      `<p>${todoJson.sDte}</p><p>~</p><p>${todoJson.fDte}</p>`;
             toDoListTag +=   `</td>`;
             toDoListTag +=   `<td class="txt_center">`;
             toDoListTag +=      `<div>`;
-            toDoListTag +=          `<button class="modify" onclick="modifyTodoFormSettting(this, '+idx+')"/>수정</button>`;
+            toDoListTag +=          `<button class="modify" onclick="modifyTodoFormSettting(this, ${idx})"/>수정</button>`;
             toDoListTag +=          `<button class="del" onclick="removeTodo(this, ${idx})"/>삭제</button>`;
             toDoListTag +=      `</div>`;
             toDoListTag +=   `</td>`;
             toDoListTag += `</tr>`;
         });
-        document.querySelector("#todoListTable tbody").insertAdjacentHTML('beforeend', ''); // 테이블 태그 리셋
+        document.querySelector("#todoListTable tbody").replaceChildren(); // 테이블 태그 리셋
         document.querySelector("#todoListTable tbody").insertAdjacentHTML('beforeend', toDoListTag); // Json 리스트 태그로 노출
     }
 }
@@ -189,6 +199,30 @@ var resetTodoForm = () => {
     });
 
     document.querySelector('#modifyIdx').value = "-1"; // 수정 대상 제거
-    
 }
 
+var searchTodoList = function(){
+    var searchText = document.querySelector("#searchTxt");
+    if(searchTxt.value.trim() == ""){
+        searchText.value = "";
+        searchTxt.classList.add('no_txt');
+        setTimeout(() => {
+            searchTxt.classList.remove('no_txt');
+        }, 5000);
+        return;
+    }
+
+    var searchTodoList = [];
+    var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
+
+    todoListJson.forEach((todoJson, idx) => {
+        // 내용 또는 제목에 포함된 텍스트 조회 > 조회된 텍스틑 span .search_trgt_txt 처리
+        if(todoJson.cntn.indexOf(searchText.value) != -1 || todoJson.tit.indexOf(searchText.value) != -1){ 
+            todoJson.cntn = todoJson.cntn.replaceAll(searchText.value, '<span class="search_trgt_txt">'+searchText.value+'</span>')
+            todoJson.tit = todoJson.tit.replaceAll(searchText.value, '<span class="search_trgt_txt">'+searchText.value+'</span>')
+            
+            searchTodoList.push(todoJson);
+        }
+    });
+    createTodoListTag(searchTodoList);
+}

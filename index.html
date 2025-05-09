@@ -18,14 +18,14 @@
     <section class="main_wrap">
         <!-- 수정 대상 index : -1 디폴트(수정 대상 X) -->
         <input type="hidden" id ="modifyIdx" name="modifyIdx" value="-1"> 
-        <form id="todoForm" class="submit_wrap">
+        <form id="todoForm" class="submit_wrap" onsubmit="regeTodoProc(); return false;">
             <div class="cntn_wrap">
                 <input type="date" name="sDte" value=""/>
                 <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
                 <input type="date" name="fDte" value=""/>
             </div>
             <div class="tit_wrap middle_center">
-                <input type="text" placeholder="제목" name="tit"/>
+                <input type="text" placeholder="제목을 입력해주세요." name="tit"/>
                 <button type="button" id="submitBtn">등록</button>
 
                 <button type="button" id="modifyBtn" class="modify_btns">수정</button>
@@ -37,10 +37,12 @@
         </form>
 
 
-        <form class="search_form">
-            <input type="text">
-            <button type="button"></button>
-            <i class="ri-search-line"></i>
+        <form id="searchForm" class="search_form tit_wrap middle_center" onsubmit="event.preventDefault(); searchTodoList(); return false;">
+            <label for="searchTxt">검색 : </label>
+            <input type="text" id="searchTxt" class="search_txt" placeholder="검색어를 입력해주십시오.">
+            <button type="button" onclick="searchTodoList();">
+                <i class="ri-search-line"></i>
+            </button>
         </form>
 
 
