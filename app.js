@@ -32,7 +32,6 @@ window.onload = function(){
         regeTodoProc();
     });
 
-
     document.querySelector("#modifyBtn").addEventListener("click", () => {
         regeTodoProc();
     });
@@ -202,24 +201,30 @@ var resetTodoForm = () => {
 }
 
 var searchTodoList = function(){
+    var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
+    
     var searchText = document.querySelector("#searchTxt");
-    if(searchTxt.value.trim() == ""){
+    if(searchTxt.value.trim() == ""){ // 검색어 미입력
         searchText.value = "";
         searchTxt.classList.add('no_txt');
         setTimeout(() => {
             searchTxt.classList.remove('no_txt');
         }, 5000);
+
+        createTodoListTag(todoListJson);
         return;
     }
 
     var searchTodoList = [];
-    var todoListJson = JSON.parse(localStorage.getItem('todoListJson')); // JSON 조회
 
     todoListJson.forEach((todoJson, idx) => {
+        // 공백 무시 문자열 비교 정규식
+        const pattern = createWhitespaceInsensitiveRegex(searchText.value.replaceAll(" ", ""));
+        
         // 내용 또는 제목에 포함된 텍스트 조회 > 조회된 텍스틑 span .search_trgt_txt 처리
-        if(todoJson.cntn.indexOf(searchText.value) != -1 || todoJson.tit.indexOf(searchText.value) != -1){ 
-            todoJson.cntn = todoJson.cntn.replaceAll(searchText.value, '<span class="search_trgt_txt">'+searchText.value+'</span>')
-            todoJson.tit = todoJson.tit.replaceAll(searchText.value, '<span class="search_trgt_txt">'+searchText.value+'</span>')
+        if(todoJson.cntn.match(pattern) || todoJson.tit.match(pattern)){ 
+            todoJson.cntn = todoJson.cntn.replaceAll(pattern, '<span class="search_trgt_txt">$&</span>')
+            todoJson.tit = todoJson.tit.replaceAll(pattern, '<span class="search_trgt_txt">$&</span>')
             
             searchTodoList.push(todoJson);
         }

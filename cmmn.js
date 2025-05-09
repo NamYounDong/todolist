@@ -25,3 +25,20 @@ Date.prototype.format = function(f) {
 String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
 String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
 Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+
+// String Format 02d
+function pad(n, width){
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+}
+
+// 문자열을 입력받아 자동으로 정규식 생성
+function createWhitespaceInsensitiveRegex(str) {
+    const escaped = str
+      .split("")
+      .map(ch => ch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")) // 특수문자 이스케이프
+      .join("\\s*"); // 문자 사이에 공백 허용
+  
+    return new RegExp(escaped, "g");
+  }
