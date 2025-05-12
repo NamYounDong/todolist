@@ -125,14 +125,19 @@ const calendarTableTrTag = (cellDte, dte, todoListJson, nowDte) => {
 
         // 시작일 >= 현재 셀 연월일 <= 마감일
         if(cellDte >= todoSDte && cellDte <= todoFDte){  
-            todoTag += `<div class="todo_wrap ${cellDte >= nowDte ? '' : ' op05'}">${todoJson.tit}</div>`;
+            todoTag += `<div class="todo_wrap ${cellDte >= nowDte ? '' : ' op05'}">
+                ${todoJson.tit}
+                <div class="todo_calendar_cntn">${todoJson.cntn.replaceAll('\n', '<br>')}</div>
+            </div>`;
         }
     })
 
     calendarTodoTdTag += `<td>
                             <div class="cell_wrap">
                                 <div class="cell_dte${cellDte ==  nowDte ? ' txt-bold' : ''}${month == cellDte.split('-')[1] ? '' : ' op05'}">${dte}</div>
-                                <div class="cell_todo${cellDte >= nowDte ? '' : ' op05'}">${todoTag}</div>
+                                <div class="cell_todo${cellDte >= nowDte ? '' : ' op05'}">
+                                    ${todoTag}
+                                </div>
                             </div>
                         </td>`;
 

@@ -41,4 +41,4 @@ function createWhitespaceInsensitiveRegex(str) {
       .join("\\s*"); // 문자 사이에 공백 허용
   
     return new RegExp(escaped, "g");
-  }
+}

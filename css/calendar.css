@@ -83,3 +83,22 @@
 .cell_todo .todo_wrap:last-child{
     margin-bottom:0px;
 }
+
+
+
+.todo_wrap  > .todo_calendar_cntn {
+    display: none;
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    background: #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid;
+    z-index: 1;
+    opacity: 1;
+}
+
+.todo_wrap:hover > .todo_calendar_cntn {
+    display: block;
+}

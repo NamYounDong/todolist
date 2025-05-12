@@ -39,7 +39,7 @@ label {
     font-weight: bold;
 }
 
-input {
+input, textarea {
     outline: none;
 }
 
