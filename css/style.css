@@ -13,6 +13,14 @@
     user-select: none;
 }
 
+
+body {
+    width: 100%;
+    height: 100%;
+    padding:20px 0;
+}
+
+
 ol, ul {
     list-style: none;
 }
@@ -67,12 +75,6 @@ button {
     font-size:0.7rem;
     height: fit-content;
 }
-
-body {
-    width:100vw;
-    height:100vh;
-}
-
 
 
 .op05 {

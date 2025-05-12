@@ -62,9 +62,24 @@
     min-height:100px;
 }
 
+.cell_todo{
+    margin-top:5px;
+}
+
 .todo_wrap {
     background: yellow;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.cell_todo .todo_wrap{
+    border-radius: 5px;
+    border:1px solid #ddd;
+    margin-bottom:5px;
+    padding:5px 10px;
+}
+
+.cell_todo .todo_wrap:last-child{
+    margin-bottom:0px;
 }

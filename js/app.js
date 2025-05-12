@@ -128,7 +128,7 @@ const createTodoListTag = (todoListJson) => { // 차후 검색/페이징 처리 
     }
 
     // calendar 현재 날짜 지정 및 생성
-    selectCalendarDte();
+    selectCalendarDte('', todoListJson);
 }
 
 
