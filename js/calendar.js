@@ -60,12 +60,13 @@ const createCalendar = (todoListJson) => {
 
     // 전월 마지막 일자
     const prevDte = new Date(`${year}-${month}`);
-    prevDte.setMonth(prevDte.getMonth());
-    const prevLastDte = new Date(prevDte.getFullYear(), prevDte.getMonth(), 0).getDate();
+    prevDte.setMonth(prevDte.getMonth()-1);
+    // getMonth() 는 0부터 시작이기 때문에 +1 처리
+    const prevLastDte = new Date(prevDte.getFullYear(), prevDte.getMonth()+1, 0).getDate(); 
 
     // 익월 마지막 일자
     const nxtDte = new Date(`${year}-${month}`);
-    nxtDte.setMonth(prevDte.getMonth()+1);
+    nxtDte.setMonth(nxtDte.getMonth()+1);
 
 
     let calendarTableTag = '<tr>';
@@ -82,51 +83,23 @@ const createCalendar = (todoListJson) => {
 
         if(i < fstDay){ // 전 월 마지막 일자 까지
             const prevMonthDte = prevLastDte - (fstDay - 1) + i;
-            const prevMonthCellDte = new Date(`${prevDte.getFullYear()}-${prevDte.getMonth()}-${pad(prevMonthDte, 2)}`).format('yyyy-MM-dd'); 
+            const prevMonthCellDte = new Date(`${prevDte.getFullYear()}-${prevDte.getMonth()+1}-${pad(prevMonthDte, 2)}`).format('yyyy-MM-dd'); 
 
-            let todoTag = '';
-            todoListJson.forEach((todoJson) => {
-                const todoSDte = new Date(todoJson.sDte).format('yyyy-MM-dd');
-                const todoFDte = new Date(todoJson.fDte).format('yyyy-MM-dd');
-
-                // 시작일 >= 현재 셀 연월일 <= 마감일
-                if(prevMonthCellDte >= todoSDte && prevMonthCellDte <= todoFDte){  
-                    todoTag += `<div class="todo_wrap ${prevMonthCellDte >= nowDte ? '' : ' op05'}">${todoJson.tit}</div>`;
-                }
-            })
-
-            calendarTableTag += `<td>
-                                    <div class="cell_wrap">
-                                        <div class="cell_dte op05">${prevMonthDte}</div>
-                                        <div class="cell_todo">${todoTag}</div>
-                                    </div>
-                                </td>`;
-
+            calendarTableTag += calendarTableTrTag(prevMonthCellDte, prevMonthDte, todoListJson, nowDte);
 
         }else if(lastDte >= cellDte){ // 마지막 일자와 현재 셀에 출력할 날짜가 같아질 때 까지
             
             // 현재 셀 연월일
             const nowCellDte = new Date(`${year}-${month}-${pad(cellDte, 2)}`).format('yyyy-MM-dd'); 
             
-            let todoTag = '';
-            todoListJson.forEach((todoJson) => {
-                const todoSDte = new Date(todoJson.sDte).format('yyyy-MM-dd');
-                const todoFDte = new Date(todoJson.fDte).format('yyyy-MM-dd');
-
-                // 시작일 >= 현재 셀 연월일 <= 마감일
-                if(nowCellDte >= todoSDte && nowCellDte <= todoFDte){  
-                    todoTag += `<div class="todo_wrap${nowCellDte >= nowDte ? '' : ' op05'}">${todoJson.tit}</div>`;
-                }
-            })
-            calendarTableTag += `<td>
-                                    <div class="cell_wrap">
-                                        <div class="cell_dte${nowCellDte == nowDte ? ' txt-bold' : ''}">${cellDte}</div>
-                                        <div class="cell_todo">${todoTag}</div>
-                                    </div>
-                                </td>`;
+            calendarTableTag += calendarTableTrTag(nowCellDte, cellDte, todoListJson, nowDte);
 
         }else{ // 익 월 셀 남으면 입력
-            calendarTableTag += `<td class="op05">${cellDte - lastDte}</td>`;
+            const nxtMonthDte = cellDte - lastDte;
+            const nxtMonthCellDte = new Date(`${nxtDte.getFullYear()}-${nxtDte.getMonth()+1}-${pad(nxtMonthDte, 2)}`).format('yyyy-MM-dd'); 
+            
+            calendarTableTag += calendarTableTrTag(nxtMonthCellDte, nxtMonthDte, todoListJson, nowDte);
+
         }
 
         if(i != 1 && i % 7 == 6){
@@ -136,4 +109,32 @@ const createCalendar = (todoListJson) => {
 
     calendarTable.replaceChildren();
     calendarTable.insertAdjacentHTML('beforeend', calendarTableTag);
+}
+
+
+// calendar Tr td 태그 생성 
+const calendarTableTrTag = (cellDte, dte, todoListJson, nowDte) => {
+    let calendarTodoTdTag = '';
+    let todoTag = '';
+
+    const month =  Number(document.querySelector("#monthListWrap .selected").textContent); 
+
+    todoListJson.forEach((todoJson) => {
+        const todoSDte = new Date(todoJson.sDte).format('yyyy-MM-dd');
+        const todoFDte = new Date(todoJson.fDte).format('yyyy-MM-dd');
+
+        // 시작일 >= 현재 셀 연월일 <= 마감일
+        if(cellDte >= todoSDte && cellDte <= todoFDte){  
+            todoTag += `<div class="todo_wrap ${cellDte >= nowDte ? '' : ' op05'}">${todoJson.tit}</div>`;
+        }
+    })
+
+    calendarTodoTdTag += `<td>
+                            <div class="cell_wrap">
+                                <div class="cell_dte${cellDte ==  nowDte ? ' txt-bold' : ''}${month == cellDte.split('-')[1] ? '' : ' op05'}">${dte}</div>
+                                <div class="cell_todo${cellDte >= nowDte ? '' : ' op05'}">${todoTag}</div>
+                            </div>
+                        </td>`;
+
+    return calendarTodoTdTag;
 }
