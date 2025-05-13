@@ -3,7 +3,6 @@
     padding:0;
     box-sizing: border-box;
     font-size: 14px;
-    /* pointer-events: none; */
     -ms-user-select: none;    
     -moz-user-select: -moz-none;   
     -khtml-user-select: none;   
@@ -15,7 +14,6 @@
 body {
     width: 100%;
     height: 100%;
-    padding:20px 0;
     background: #111;;
 }
 
@@ -89,13 +87,31 @@ header {
     position:relative;
     margin:auto;
     width:100%;
-    height:50px;
     max-width: 1280px;
 }
 
+header .skew_st{
+    position: absolute;
+    top: 10px;
+    left: 3%;
+    width: 40%;
+    height: 50px;
+    background: #fff;
+    transform: skew(11deg, -17deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    transition:all 0.5s ease;
+}
+
 header h1 {
-    padding-top:10px;
+    position:relative;
+    padding:20px 0;
     text-align: center;
+}
+header h1 span{
     font-size:1.8rem;
     color:#fff;
 }
@@ -164,6 +180,7 @@ button.modify {
 }
 
 .main_wrap {
+    position:relative;
     width:100%;
     max-width : 1280px;
     margin:0 auto;
@@ -236,7 +253,7 @@ span.search_trgt_txt {
 .todo_form_btns{
     position:absolute;
     right: 5%;
-    top:10px;
+    top: 23px;
 }
 
 .todo_form_btns > button {
@@ -252,4 +269,17 @@ span.search_trgt_txt {
 .todo_form_btns > button > i {
     font-size:1.0rem;
     font-weight: bold;
+}
+
+
+@media screen and (max-width:1120px) {
+    header .skew_st{
+        transform: skew(10deg, -25deg);
+    }
+}
+
+@media screen and (max-width:747px) {
+    header .skew_st{
+        transform: skew(-2deg, -35deg);
+    }
 }
