@@ -109,8 +109,16 @@ const createCalendar = (todoListJson) => {
     calendarTable.replaceChildren();
     calendarTable.insertAdjacentHTML('beforeend', calendarTableTag);
 
-
-
+    // calendar event
+    const evtTimeout = setTimeout(() => { // 태그 생성 직후 바로 처리 안되는 경우가 있어 0.01초 텀을 두기 위해 작성
+        document.querySelectorAll(".calendar_table td").forEach((el, i) => {
+            const evt = setTimeout(() => {
+                el.style.transform = "rotateY(360deg)";
+                clearTimeout(evt); // 이벤트 클리어
+            }, 30 * i);
+        });
+        clearTimeout(evtTimeout);  // 이벤트 클리어
+    }, 100);
 
     document.querySelectorAll('.todo_wrap').forEach((el) => {
         el.addEventListener('mouseover', (event) => {

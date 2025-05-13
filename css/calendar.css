@@ -54,7 +54,16 @@
 
 .calendar_table td {
     padding:5px;
+    transition:all 1s ease;
 }
+
+.calendar_table tr:nth-child(even) td:nth-child(odd){
+    background: #eee;
+}
+.calendar_table tr:nth-child(odd) td:nth-child(even){
+    background: #eee;
+}
+
 
 .calendar_table .cell_wrap{
     width:100%;
