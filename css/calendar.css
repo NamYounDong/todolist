@@ -54,6 +54,7 @@
 
 .calendar_table td {
     padding:5px;
+    transform: rotateY(360deg);
     transition:all 1s ease;
 }
 

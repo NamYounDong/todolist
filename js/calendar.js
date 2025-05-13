@@ -109,11 +109,12 @@ const createCalendar = (todoListJson) => {
     calendarTable.replaceChildren();
     calendarTable.insertAdjacentHTML('beforeend', calendarTableTag);
 
-    // calendar event
+    // calendar event 
     const evtTimeout = setTimeout(() => { // 태그 생성 직후 바로 처리 안되는 경우가 있어 0.01초 텀을 두기 위해 작성
         document.querySelectorAll(".calendar_table td").forEach((el, i) => {
             const evt = setTimeout(() => {
-                el.style.transform = "rotateY(360deg)";
+                // tanslate 이후 hover로 노출되는 태그 깨짐 현상 발생하여 - 역으로 제거하는 방식으로 애니메이션 발생 시킴
+                el.style.transform = "none"; 
                 clearTimeout(evt); // 이벤트 클리어
             }, 30 * i);
         });
@@ -123,7 +124,11 @@ const createCalendar = (todoListJson) => {
     document.querySelectorAll('.todo_wrap').forEach((el) => {
         el.addEventListener('mouseover', (event) => {
             // 화면 넓이, 높이
-            const screenW = document.querySelector('.main_wrap').clientWidth;
+            
+            // const screenW = document.body.offsetWidth;
+            const windowWidth = document.body.offsetWidth;
+            const screenW = document.querySelector('.main_wrap').offsetWidth;
+
             const screenH = window.innerHeight;
             // 현재 마우스 위치
             const clientX = event.clientX;
@@ -135,8 +140,15 @@ const createCalendar = (todoListJson) => {
             const elCntnWidth = el.querySelector('.todo_calendar_cntn').clientWidth;
             const elCntnHeight = el.querySelector('.todo_calendar_cntn').clientHeight;
 
-            if(clientX+elCntnWidth > screenW){
-                el.querySelector('.todo_calendar_cntn').style.left = (-1 * (elCntnWidth - (screenW - clientX))) + "px";
+            let fixClentX = 0;
+            if(windowWidth > 1280){ // 1280 container 때문에 왼쪽 마진만큼 마우스 X 좌표 조정
+                console.log(windowWidth, screenW);
+                fixClentX = ((windowWidth - screenW) / 2);
+                console.log(fixClentX);
+            }
+
+            if((clientX - fixClentX) + elCntnWidth > screenW){
+                el.querySelector('.todo_calendar_cntn').style.left = (-1 * (elCntnWidth - (screenW - (clientX-fixClentX)))) + "px";
             }
 
             if(clientY+elCntnHeight+40 > screenH){
