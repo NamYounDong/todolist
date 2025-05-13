@@ -1,4 +1,3 @@
-
 // 연/월 선택
 const selectCalendarDte = (date, todoListJson) => {
     if(date == undefined || date == ''){
@@ -109,6 +108,35 @@ const createCalendar = (todoListJson) => {
 
     calendarTable.replaceChildren();
     calendarTable.insertAdjacentHTML('beforeend', calendarTableTag);
+
+
+
+
+    document.querySelectorAll('.todo_wrap').forEach((el) => {
+        el.addEventListener('mouseover', (event) => {
+            // 화면 넓이, 높이
+            const screenW = document.querySelector('.main_wrap').clientWidth;
+            const screenH = window.innerHeight;
+            // 현재 마우스 위치
+            const clientX = event.clientX;
+            const clientY = event.clientY;
+            // mouseover 된 태그 넓이, 높이
+            const elWidth = el.clientWidth;
+            const elHeight = el.clientHeight;
+            // mouseover 된 태그 hover로 노출되는 태크 넓이, 높이
+            const elCntnWidth = el.querySelector('.todo_calendar_cntn').clientWidth;
+            const elCntnHeight = el.querySelector('.todo_calendar_cntn').clientHeight;
+
+            if(clientX+elCntnWidth > screenW){
+                el.querySelector('.todo_calendar_cntn').style.left = (-1 * (elCntnWidth - (screenW - clientX))) + "px";
+            }
+
+            if(clientY+elCntnHeight+40 > screenH){
+                el.querySelector('.todo_calendar_cntn').style.bottom = (elHeight + 5) + "px";
+            }
+        });
+    })
+    
 }
 
 
@@ -126,7 +154,7 @@ const calendarTableTrTag = (cellDte, dte, todoListJson, nowDte) => {
         // 시작일 >= 현재 셀 연월일 <= 마감일
         if(cellDte >= todoSDte && cellDte <= todoFDte){  
             todoTag += `<div class="todo_wrap">
-                <span${cellDte >= nowDte ? '' : ' class="op05"'}>${todoJson.tit}</span>
+                <div${cellDte >= nowDte ? '' : ' class="op05"'}>${todoJson.tit}</div>
                 <div class="todo_calendar_cntn">
                     <div${cellDte >= nowDte ? '' : ' class="op05"'}>${todoJson.cntn.replaceAll('\n', '<br>')}</div>
                 </div>

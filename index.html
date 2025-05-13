@@ -27,112 +27,114 @@
         </div>
     </header>
 
-    <section class="main_wrap">
-        <!-- 수정 대상 index : -1 디폴트(수정 대상 X) -->
-        <input type="hidden" id ="modifyIdx" name="modifyIdx" value="-1"> 
-        <form id="todoForm" class="submit_wrap" onsubmit="regeTodoProc(); return false;">
-            <div class="cntn_wrap">
-                <input type="date" name="sDte" value=""/>
-                <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
-                <input type="date" name="fDte" value=""/>
+    <div class="container">
+        <section class="main_wrap">
+            <!-- 수정 대상 index : -1 디폴트(수정 대상 X) -->
+            <input type="hidden" id ="modifyIdx" name="modifyIdx" value="-1"> 
+            <form id="todoForm" class="submit_wrap" onsubmit="regeTodoProc(); return false;">
+                <div class="cntn_wrap">
+                    <input type="date" name="sDte" value=""/>
+                    <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
+                    <input type="date" name="fDte" value=""/>
+                </div>
+                <div class="tit_wrap middle_center">
+                    <input type="text" placeholder="제목을 입력해주세요." name="tit"/>
+                    <button type="button" id="submitBtn">등록</button>
+
+                    <button type="button" id="modifyBtn" class="modify_btns">수정</button>
+                    <button type="button" id="modifyCancelBtn" class="modify_btns del" onclick="closeSubmitForm(); resetTodoForm()">취소</button>
+                </div>
+                <div class="cntn_wrap">
+                    <textarea name="cntn" cols="5"></textarea>
+                </div>
+            </form>
+
+
+            <form id="searchForm" class="search_form tit_wrap middle_center" onsubmit="event.preventDefault(); searchTodoList(); return false;">
+                <label for="searchTxt">검색 : </label>
+                <input type="text" id="searchTxt" class="search_txt" placeholder="검색어를 입력해주십시오.">
+                <button type="button" onclick="searchTodoList();">
+                    <i class="ri-search-line"></i>
+                </button>
+            </form>
+
+
+            <div class="todo_list_wrap">
+                <table id="todoListTable" class="todo_list_table">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="40%">
+                        <col width="20%">
+                        <col width="/">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>일정</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
-            <div class="tit_wrap middle_center">
-                <input type="text" placeholder="제목을 입력해주세요." name="tit"/>
-                <button type="button" id="submitBtn">등록</button>
 
-                <button type="button" id="modifyBtn" class="modify_btns">수정</button>
-                <button type="button" id="modifyCancelBtn" class="modify_btns del" onclick="closeSubmitForm(); resetTodoForm()">취소</button>
+        </section>
+
+
+        <section class="main_wrap">
+            <div class="date_wrap">
+                <div id="yearWrap" class="year_wrap dte_sub_wrap">
+                    <input type="number" id="year" class="year" value="2025" onchange="moveMonth(0);">
+                </div>
+                
+                <a class="dte_sub_wrap" href="javascript:moveMonth(-1);">
+                    <i class="ri-arrow-left-wide-line"></i>
+                </a>
+                <div id="monthWrap" class="month_wrap">
+                    <ul id="monthListWrap" class="month_list_wrap dte_sub_wrap">
+                        <li class="selected">01</li>
+                        <li>02</li>
+                        <li>03</li>
+                        <li>04</li>
+                        <li>05</li>
+                        <li>06</li>
+                        <li>07</li>
+                        <li>08</li>
+                        <li>09</li>
+                        <li>10</li>
+                        <li>11</li>
+                        <li>12</li>
+                    </ul>
+                </div>
+                <a class="dte_sub_wrap" href="javascript:moveMonth(1);">
+                    <i class="ri-arrow-right-wide-line"></i>
+                </a>
             </div>
-            <div class="cntn_wrap">
-                <textarea name="cntn" cols="5"></textarea>
-            </div>
-        </form>
-
-
-        <form id="searchForm" class="search_form tit_wrap middle_center" onsubmit="event.preventDefault(); searchTodoList(); return false;">
-            <label for="searchTxt">검색 : </label>
-            <input type="text" id="searchTxt" class="search_txt" placeholder="검색어를 입력해주십시오.">
-            <button type="button" onclick="searchTodoList();">
-                <i class="ri-search-line"></i>
-            </button>
-        </form>
-
-
-        <div class="todo_list_wrap">
-            <table id="todoListTable" class="todo_list_table">
+            <table id="calendarTable" class="calendar_table">
                 <colgroup>
-                    <col width="30%">
-                    <col width="40%">
-                    <col width="20%">
-                    <col width="/">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
+                    <col width="14%">
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>제목</th>
-                        <th>내용</th>
-                        <th>일정</th>
-                        <th>관리</th>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
-        </div>
-
-    </section>
-
-
-    <section class="main_wrap">
-        <div class="date_wrap">
-            <div id="yearWrap" class="year_wrap dte_sub_wrap">
-                <input type="number" id="year" class="year" value="2025" onchange="moveMonth(0);">
-            </div>
-            
-            <a class="dte_sub_wrap" href="javascript:moveMonth(-1);">
-                <i class="ri-arrow-left-wide-line"></i>
-            </a>
-            <div id="monthWrap" class="month_wrap">
-                <ul id="monthListWrap" class="month_list_wrap dte_sub_wrap">
-                    <li class="selected">01</li>
-                    <li>02</li>
-                    <li>03</li>
-                    <li>04</li>
-                    <li>05</li>
-                    <li>06</li>
-                    <li>07</li>
-                    <li>08</li>
-                    <li>09</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                </ul>
-            </div>
-            <a class="dte_sub_wrap" href="javascript:moveMonth(1);">
-                <i class="ri-arrow-right-wide-line"></i>
-            </a>
-        </div>
-        <table id="calendarTable" class="calendar_table">
-            <colgroup>
-                <col width="14%">
-                <col width="14%">
-                <col width="14%">
-                <col width="14%">
-                <col width="14%">
-                <col width="14%">
-                <col width="14%">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>일</th>
-                    <th>월</th>
-                    <th>화</th>
-                    <th>수</th>
-                    <th>목</th>
-                    <th>금</th>
-                    <th>토</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </section>
+        </section>
+    </div>
 </body>
 </html>
